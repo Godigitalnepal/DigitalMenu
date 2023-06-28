@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online-Form</title>
+  <link rel="icon" type="image/x-icon" href="feather-solid.svg">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <script src="https://kit.fontawesome.com/9444d98890.js" crossorigin="anonymous"></script></head>
+<body>
+
+
+  <div class="wrapper">
+    <header style="color:rgb(124, 38, 194)">Credit Form <i class="fa-solid fa-feather fa-lg"></i></header>
+   <div class="top" style="color: #1a0d66; font-weight: 200; margin-top: 20px;">
+    <!-- <i class="fa-regular fa-clock fa-spin" ></i> -->
+    <p id="time" style="font: size 24px;; font-style: bold; color: rgba(112, 116, 143, 0.904); font-weight: bold; padding-right: 3px;" >Date</p>
+    <h3 id="text"></h3>
+    
+  </div>
+    <form action="#" >
+      <div class="field Date">
+        <div class="input-area">
+          <input type="date" name="begin" 
+          placeholder="dd-mm-yyyy" value=""
+          min="1997-01-01" max="3030-12-31"  id="custdate">
+          <!-- <i class="icon fas fa-envelope"></i> -->
+          <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div> 
+        <div class="error error-txt">Date can't be blank</div>
+          </div>
+
+      <div class="field cname">
+        <div class="input-area">
+          <i class="fa-solid fa-circle-user fa-beat fa-2xs" style="color: #1863b4; padding-left: 10px;"></i>
+          <input id="custname"  type="text" placeholder="Customer Name">
+          <i class="fa-solid"></i>
+          <i class="error error-icon fas fa-exclamation-circle"></i>
+        </div>
+        <div class="error error-txt">Customer name can't be blank</div>
+      </div>
+
+        <div class="field phonenumber">
+          <div class="input-area">
+            <i class="fa-solid fa-mobile fa-bounce fa-sm" style="padding-left:10px ;"></i>
+           
+            <input type="number" placeholder="+977" id="custnumber" value="977" > 
+            
+            <i class="error error-icon fas fa-exclamation-circle"></i>
+          </div>
+          <div class="error error-txt"> Phone number can't be blank</div>
+        </div>
+          
+
+          <div class="field Address">
+            <div class="input-area">
+              <i class="fa-solid fa-location-arrow" style="color: #105cf4; padding-left: 10px;"></i>
+              <input type="text" placeholder="Address" id="location" onclick="getnavigation()" >
+              <input type="hidden" placeholder="Address" id="geolocationgps" >
+              <i  class="error error-icon fas fa-exclamation-circle" ></i>
+            </div>
+           
+          <div class="error error-txt"  ></div>
+          </div>
+
+        
+          
+             
+              
+          
+
+           
+
+        
+    
+     
+          <Button id="submitData" name="submitData" class="registerbtn">Submit <i class="fa-solid fa-circle-check" style="color: #1dc93f;"></i></Button>
+          
+        </form>
+  
+  </div>
+  <script type="module" >
+   import {initializeApp} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.17.2/firebase-analytics.js";
+import {getDatabase, ref, set, onValue, update} from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyBs82S-a8B_n2nvE58-eSJaBEZS_hOqpQw",
+authDomain: "formproject-97909.firebaseapp.com",
+projectId: "formproject-97909",
+storageBucket: "formproject-97909.appspot.com",
+messagingSenderId: "1022928071280",
+appId: "1:1022928071280:web:424997b8216d1a093562b5",
+measurementId: "G-B1KN9Z1612"
+};
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+// Initialize Firebase
+
+
+
+submitData.addEventListener('click', (e) => {
+
+var customer_name = document.getElementById('custname').value;
+ var customer_date = document.getElementById('custdate').value;
+  var phone_number = document.getElementById('custnumber').value;
+// // var credit_amount = document.getElementById('custamt').value;
+ var customer_address = document.getElementById('location').value;
+ var gps_location=document.getElementById('geolocationgps').value;
+
+
+// const newKey = push(child(ref(database), 'users')).key;
+
+//add data
+set(ref(database, 'creditformnew3/'+customer_name+phone_number ), {
+customer_name: customer_name,
+ customer_date:customer_date,
+ phone_number:phone_number,
+  customer_address:customer_address,
+gps_location:gps_location
+}).then(() => {
+ var x = document.getElementById('text');
+ x.innerHTML="Thank you for submitting";
+
+
+ var customer_name = document.getElementById('custname');
+ var customer_date = document.getElementById('custdate');
+  var phone_number = document.getElementById('custnumber');
+  var customer_address = document.getElementById('location');
+  var gps_location = document.getElementById('geolocationgps');
+customer_name.value="";
+customer_date.value="";
+phone_number.value="";
+customer_address="";
+gps_location.value="";
+console.log("sucess");
+})
+.catch((error) => {
+// The write failed...
+// var x = document.getElementById('text');
+
+ console.log("error");
+});
+
+});
+
+// readData.addEventListener('click', (e) => {
+// // // read data
+//  const starCountRef = ref(database, 'creditformnew3/'+customer_name+phone_number);
+//  onValue(starCountRef, (snapshot) => {
+//      const data = snapshot.val();
+//      console.log(data.customer_name+phone_number);
+//  });
+//  });
+
+// updateData.addEventListener('click', (e) => {
+// //update data
+// update(ref(database, 'users/' + username), {
+//     email: email,
+//     age: age
+// }).then(() => {
+//     // Data saved successfully!
+//     alert('data updated');
+// })
+//     .catch((error) => {
+//         // The write failed...
+//         alert(error);
+//     });
+// });
+
+// removeData.addEventListener('click', (e) => {
+// //remove data
+// removeData.addEventListener('click',(e) => {
+//     var username = document.getElementById('username').value;
+
+//     remove(ref(database, 'users/' + username));
+//     alert('removed');
+// });
+// });
+   
+</script>
+
+  <script src="script.js"></script>
+  
+
+</body>
+</html>
